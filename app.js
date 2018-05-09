@@ -1,26 +1,26 @@
 const express = require('express');
-const https = require('https');
-const http = require('http');
+const Request = require("request");
 const app = express();
 
-var url = 'http://graph.facebook.com/517267866/?fields=picture';
+const url = 'https://launchlibrary.net/1.3/launch/next/5';
 
 app.get('/', (req, response) => {
-  http.get(url, function(res){
-      var body = '';
-
-      res.on('data', function(chunk){
-          body += chunk;
-      });
-
-      res.on('end', function(){
-          var fbResponse = JSON.parse(body);
-          console.log("Got a response: ", fbResponse);
-          response.send(fbResponse)
-      });
-  }).on('error', function(e){
-        console.log("Got an error: ", e);
-  });
+    Request.get(url, (error, resp, body) => {
+        if(error) next(error);
+        else response.send(JSON.parse(body));
+    });
 })
+
+app.use(logErrors)
+app.use(errorHandler)
+
+function logErrors (err, req, res, next) {
+    console.error(err.stack)
+    next(err)
+}
+
+function errorHandler (err, req, res, next) {
+    if(err) res.status(500).send({ error: 'Something failed!' });
+}
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
