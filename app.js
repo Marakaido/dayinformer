@@ -13,7 +13,10 @@ app.get('/launch/:number', (req, response) => {
 })
 
 app.get('/dayfact', (req, response) => {
-    let url = 'http://numbersapi.com/2/29/date';
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let url = `http://numbersapi.com/${month}/${day}/date`;
     Request.get(url, (error, resp, body) => {
         if(error) next(error);
         response.send({message: body});
