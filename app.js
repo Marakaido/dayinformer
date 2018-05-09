@@ -2,25 +2,55 @@ const express = require('express');
 const Request = require("request");
 const app = express();
 
-const url = 'https://launchlibrary.net/1.3/launch/next/5';
+var launchlibrary = 'https://launchlibrary.net/1.3/launch/next/1';
 
-app.get('/', (req, response) => {
+app.get('/launch', (req, response) => {
+    let url = launchlibrary;
     Request.get(url, (error, resp, body) => {
         if(error) next(error);
-        else response.send(JSON.parse(body));
+        response.send(JSON.parse(body));
     });
 })
 
-app.use(logErrors)
-app.use(errorHandler)
+app.get('/dayfact', (req, response) => {
+    let url = 'http://numbersapi.com/2/29/date';
+    Request.get(url, (error, resp, body) => {
+        if(error) next(error);
+        response.send({message: body});
+    });
+})
+
+app.get('/isslocation', (req, response) => {
+    let url = 'http://api.open-notify.org/iss-now.json?callback=?';
+    Request.get(url, (error, resp, body) => {
+        if(error) next(error);
+        response.send(parseISSResponse(body));
+    });
+})
+
+app.get('/isspeople', (req, response) => {
+    let url = 'http://api.open-notify.org/astros.json?callback=?';
+    Request.get(url, (error, resp, body) => {
+        if(error) next(error);
+        response.send(parseISSResponse(body));
+    });
+})
+
+app.use(logErrors);
+app.use(errorHandler);
 
 function logErrors (err, req, res, next) {
-    console.error(err.stack)
-    next(err)
+    console.error(err.stack);
+    next(err);
 }
 
 function errorHandler (err, req, res, next) {
-    if(err) res.status(500).send({ error: 'Something failed!' });
+    res.status(500);
+    res.render('error', { error: err });
+}
+
+function parseISSResponse(response) {
+    return JSON.parse(response.substring(2, response.length - 1));
 }
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
