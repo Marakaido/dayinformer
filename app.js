@@ -2,10 +2,10 @@ const express = require('express');
 const Request = require("request");
 const app = express();
 
-var launchlibrary = 'https://launchlibrary.net/1.3/launch/next/1';
+var launchlibrary = 'https://launchlibrary.net/1.3/launch/next/';
 
-app.get('/launch', (req, response) => {
-    let url = launchlibrary;
+app.get('/launch/:number', (req, response) => {
+    let url = launchlibrary + req.params.number;
     Request.get(url, (error, resp, body) => {
         if(error) next(error);
         response.send(JSON.parse(body));
