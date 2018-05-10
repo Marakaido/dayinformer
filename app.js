@@ -2,37 +2,42 @@ const express = require('express');
 const app = express();
 const fetch = require('node-fetch');
 
-var launchlibrary = 'https://launchlibrary.net/1.3/launch/next/';
+const launchlibrary = 'https://launchlibrary.net/1.3/launch/next/';
 
 app.use(express.static(__dirname + '/public'));
 
 app.get('/launch/:number', async function (req, response) {
-    let result = await getLaunches(req.params.number);
+    let result = await getLaunches(req.params.number).catch((err) => next(err));
     response.send(result);
 })
 
 app.get('/dayfact', async function (req, response) {
-    let result = await getDayFact();
+    let result = await getDayFact().catch((err) => next(err));
     response.send(result);
 })
 
 app.get('/isslocation', async function (req, response) {
-    let result = await getISSLocation();
+    let result = await getISSLocation().catch((err) => next(err));
     response.send(result);
 })
 
 app.get('/isspeople', async function (req, response) {
-    let result = await getISSPeople();
+    let result = await getISSPeople().catch((err) => next(err));
     response.send(result);
 })
 
 app.get('/package', async function(req, response) {
-    response.send({
-        launches: await getLaunches(5),
-        dayfact: await getDayFact(),
-        issLocation: await getISSLocation(),
-        issPeople: await getISSPeople()
-    });
+    try {
+        response.send({
+            launches: await getLaunches(5),
+            dayfact: await getDayFact(),
+            issLocation: await getISSLocation(),
+            issPeople: await getISSPeople()
+        });
+    }
+    catch(err) {
+        next(err);
+    }
 })
 
 app.use(logErrors);
