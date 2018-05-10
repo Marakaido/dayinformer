@@ -1,42 +1,36 @@
 const express = require('express');
-const Request = require("request");
 const app = express();
+const fetch = require('node-fetch');
 
 var launchlibrary = 'https://launchlibrary.net/1.3/launch/next/';
 
-app.get('/launch/:number', (req, response) => {
+app.use(express.static(__dirname + '/public'));
+
+app.get('/launch/:number', async function (req, response) {
     let url = launchlibrary + req.params.number;
-    Request.get(url, (error, resp, body) => {
-        if(error) next(error);
-        response.send(JSON.parse(body));
-    });
+    let result = await getData(url);
+    response.send(result);
 })
 
-app.get('/dayfact', (req, response) => {
+app.get('/dayfact', async function (req, response) {
     let date = new Date();
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let url = `http://numbersapi.com/${month}/${day}/date`;
-    Request.get(url, (error, resp, body) => {
-        if(error) next(error);
-        response.send({message: body});
-    });
+    let result = await getText(url);
+    response.send(result);
 })
 
-app.get('/isslocation', (req, response) => {
-    let url = 'http://api.open-notify.org/iss-now.json?callback=?';
-    Request.get(url, (error, resp, body) => {
-        if(error) next(error);
-        response.send(parseISSResponse(body));
-    });
+app.get('/isslocation', async function (req, response) {
+    let url = 'http://api.open-notify.org/iss-now.json';
+    let result = await getData(url);
+    response.send(result);
 })
 
-app.get('/isspeople', (req, response) => {
-    let url = 'http://api.open-notify.org/astros.json?callback=?';
-    Request.get(url, (error, resp, body) => {
-        if(error) next(error);
-        response.send(parseISSResponse(body));
-    });
+app.get('/isspeople', async function (req, response) {
+    let url = 'http://api.open-notify.org/astros.json';
+    let result = await getData(url);
+    response.send(result);
 })
 
 app.use(logErrors);
@@ -52,8 +46,16 @@ function errorHandler (err, req, res, next) {
     res.render('error', { error: err });
 }
 
-function parseISSResponse(response) {
-    return JSON.parse(response.substring(2, response.length - 1));
+async function getData(url) {
+    const res = await fetch(url);
+    const json = await res.json();
+    return json;
+}
+
+async function getText(url) {
+    const res = await fetch(url);
+    const text = await res.text();
+    return text;
 }
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
