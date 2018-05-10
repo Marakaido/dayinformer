@@ -4,27 +4,27 @@ const fetch = require('node-fetch');
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/launch/:number', async function (req, response) {
+app.get('/launch/:number', async (req, response, next) => {
     let result = await getLaunches(req.params.number).catch((err) => next(err));
     response.send(result);
 })
 
-app.get('/dayfact', async function (req, response) {
+app.get('/dayfact', async (req, response, next) => {
     let result = await getDayFact().catch((err) => next(err));
     response.send(result);
 })
 
-app.get('/isslocation', async function (req, response) {
+app.get('/isslocation', async (req, response, next) => {
     let result = await getISSLocation().catch((err) => next(err));
     response.send(result);
 })
 
-app.get('/isspeople', async function (req, response) {
+app.get('/isspeople', async (req, response, next) => {
     let result = await getISSPeople().catch((err) => next(err));
     response.send(result);
 })
 
-app.get('/package', async function(req, response) {
+app.get('/package', async (req, response, next) => {
     try {
         response.send({
             launches: await getLaunches(5),
@@ -98,7 +98,7 @@ function logErrors (err, req, res, next) {
 
 function errorHandler (err, req, res, next) {
     res.status(500);
-    res.render('error', { error: err });
+    res.send({ error: err });
 }
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
