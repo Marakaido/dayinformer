@@ -1,19 +1,72 @@
-body {
+html, body {
     padding: 0px;
-    background-color: black;
+    margin: 0px;
+    background-color: #E8F1F4;
+    font-family: 'Roboto', sans-serif;
 }
 .content {
-    width: 80%;
+    width: 85%;
     display: grid;
-    grid-template-columns: 70% auto;
+    grid-template-columns: 65% auto;
     grid-template-rows: 100%;
-    grid-gap: 5px;
+    
     justify-content: center;
-
     margin: auto;
-    padding: 5px;
+}
 
-    background-color: #FFFFFF;
+* {
+    font-family: 'Roboto', sans-serif;
+}
 
+.card {
     border-radius: 5px;
+    box-shadow: 5px 5px 8px 0px rgba(0, 0, 0, .3);
+    margin: 10px;
+    background-color: white;
+    overflow: hidden;
+}
+
+h1 {
+    color: #00A896;
+    text-align: center;
+}
+
+.fieldSpecifier {
+    background-color: #00A896;
+}
+
+table {
+    border-collapse:separate;
+    border-radius:5px;
+    -moz-border-radius:6px;
+}
+
+th, td {
+    padding: 5px 7px 5px 10px;
+}
+
+.label {
+    color: white;
+    font-weight: 700;
+}
+
+.asideHeader {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px 5px 0px 0px;
+    background-color: #00A896;
+    color: white;
+    font-weight: 700;
+    font-size: 15pt;
+    text-align: center;
+}
+
+footer {
+    background-color: #00A896;
+    width: 100%;
+    color: white;
+    font-weight: 700px;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+    margin: 0px;
 }
