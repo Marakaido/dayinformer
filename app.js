@@ -53,9 +53,22 @@ async function getText(url) {
     return text;
 }
 
-function getLaunches(number) {
+async function getLaunches(number) {
     let url = 'https://launchlibrary.net/1.3/launch/next/' + number;
-    return getData(url);
+    let data = await getData(url);
+    let result = [];
+    data.launches.forEach(launch => {
+        result.push({
+            name: launch.name,
+            status: launch.status,
+            start: launch.windowstart,
+            end: launch.windowend,
+            info: launch.infoURLs,
+            vids: launch.vidURLs,
+            location: launch.location.name
+        });
+    });
+    return Promise.resolve(result);
 }
 
 function getDayFact() {
