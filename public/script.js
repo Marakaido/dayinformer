@@ -27,19 +27,30 @@ function launchTemplate(data) {
                 <tr><td>Name:</td><td>${data.name}</td></tr>
                 <tr><td>Starts:</td><td>${data.start}</td></tr>
                 <tr><td>Ends:</td><td>${data.end}</td></tr>
-                <tr><td>Info:</td><td>${data.info}</td></tr>
-                <tr><td>Videos:</td><td>${data.vids}</td></tr>
+                <tr><td>Info:</td><td>${linkArrayTemplate(data.info)}</td></tr>
+                <tr><td>Videos:</td><td>${linkArrayTemplate(data.vids)}</td></tr>
                 <tr><td>Location:</td><td>${data.location}</td></tr>
             </table>
     `;
 }
 
+function linkArrayTemplate(data) {
+    if(data == null || data.length == 0) return 'no data';
+
+    let result = '<ul>';
+    data.forEach((el) => {
+        result += `<li><a href="${el}">${el}</a></li>`;
+    });
+    result += '</ul>';
+    return result;
+}
+
 function issTemplate(data) {
     return `
+        <h1>International Space Station</h1>
         <table>
-        <tr><td>Location: </td><td>${locationTemplate(data.location)}</td></tr>
-        <tr><td colspan="2"> </td></tr>
-        <tr><td colspan="2">Astronauts:<br />${peopleTemplate(data.people)}</td></tr>
+        <tr><td><p>Location: </p></td><td>${locationTemplate(data.location)}</td></tr>
+        <tr><td valign="top"><p>Astronauts: </p></td><td>${peopleTemplate(data.people)}</td></tr>
         </table>
     `;
 }
@@ -62,5 +73,8 @@ function locationTemplate(data) {
 }
 
 function factTemplate(data) {
-    return data;
+    return `
+        <h1>Fun fact of the day</h1>
+        <p>${data}</p>
+    `;
 }
