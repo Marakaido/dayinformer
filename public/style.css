@@ -1,0 +1,19 @@
+body {
+    padding: 0px;
+    background-color: black;
+}
+.content {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 70% auto;
+    grid-template-rows: 100%;
+    grid-gap: 5px;
+    justify-content: center;
+
+    margin: auto;
+    padding: 5px;
+
+    background-color: #FFFFFF;
+
+    border-radius: 5px;
+}
