@@ -7,29 +7,22 @@ var launchlibrary = 'https://launchlibrary.net/1.3/launch/next/';
 app.use(express.static(__dirname + '/public'));
 
 app.get('/launch/:number', async function (req, response) {
-    let url = launchlibrary + req.params.number;
-    let result = await getData(url);
+    let result = await getLaunches(req.params.number);
     response.send(result);
 })
 
 app.get('/dayfact', async function (req, response) {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let url = `http://numbersapi.com/${month}/${day}/date`;
-    let result = await getText(url);
+    let result = await getDayFact();
     response.send(result);
 })
 
 app.get('/isslocation', async function (req, response) {
-    let url = 'http://api.open-notify.org/iss-now.json';
-    let result = await getData(url);
+    let result = await getISSLocation();
     response.send(result);
 })
 
 app.get('/isspeople', async function (req, response) {
-    let url = 'http://api.open-notify.org/astros.json';
-    let result = await getData(url);
+    let result = await getISSPeople();
     response.send(result);
 })
 
@@ -56,6 +49,29 @@ async function getText(url) {
     const res = await fetch(url);
     const text = await res.text();
     return text;
+}
+
+function getLaunches(number) {
+    let url = launchlibrary + number;
+    return getData(url);
+}
+
+function getDayFact() {
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let url = `http://numbersapi.com/${month}/${day}/date`;
+    return getText(url);
+}
+
+function getISSLocation() {
+    let url = 'http://api.open-notify.org/iss-now.json';
+    return  getData(url);
+}
+
+function getISSPeople() {
+    let url = 'http://api.open-notify.org/astros.json';
+    return getData(url);
 }
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
