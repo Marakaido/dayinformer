@@ -26,6 +26,15 @@ app.get('/isspeople', async function (req, response) {
     response.send(result);
 })
 
+app.get('/package', async function(req, response) {
+    response.send({
+        launches: await getLaunches(5),
+        dayfact: await getDayFact(),
+        issLocation: await getISSLocation(),
+        issPeople: await getISSPeople()
+    });
+})
+
 app.use(logErrors);
 app.use(errorHandler);
 
