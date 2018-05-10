@@ -29,16 +29,6 @@ app.get('/isspeople', async function (req, response) {
 app.use(logErrors);
 app.use(errorHandler);
 
-function logErrors (err, req, res, next) {
-    console.error(err.stack);
-    next(err);
-}
-
-function errorHandler (err, req, res, next) {
-    res.status(500);
-    res.render('error', { error: err });
-}
-
 async function getData(url) {
     const res = await fetch(url);
     const json = await res.json();
@@ -72,6 +62,16 @@ function getISSLocation() {
 function getISSPeople() {
     let url = 'http://api.open-notify.org/astros.json';
     return getData(url);
+}
+
+function logErrors (err, req, res, next) {
+    console.error(err.stack);
+    next(err);
+}
+
+function errorHandler (err, req, res, next) {
+    res.status(500);
+    res.render('error', { error: err });
 }
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
