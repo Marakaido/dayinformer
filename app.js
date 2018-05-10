@@ -29,8 +29,10 @@ app.get('/package', async function(req, response) {
         response.send({
             launches: await getLaunches(5),
             dayfact: await getDayFact(),
-            issLocation: await getISSLocation(),
-            issPeople: await getISSPeople()
+            iss: {
+                location: await getISSLocation(),
+                people:  await getISSPeople()
+            }
         });
     }
     catch(err) {
