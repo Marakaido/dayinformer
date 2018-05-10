@@ -2,8 +2,6 @@ const express = require('express');
 const app = express();
 const fetch = require('node-fetch');
 
-const launchlibrary = 'https://launchlibrary.net/1.3/launch/next/';
-
 app.use(express.static(__dirname + '/public'));
 
 app.get('/launch/:number', async function (req, response) {
@@ -56,7 +54,7 @@ async function getText(url) {
 }
 
 function getLaunches(number) {
-    let url = launchlibrary + number;
+    let url = 'https://launchlibrary.net/1.3/launch/next/' + number;
     return getData(url);
 }
 
